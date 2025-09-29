@@ -2,19 +2,34 @@
   <mat-card class="job-detail-card">
     <!-- En-tête principal de la carte -->
     <mat-card-header class="card-main-header">
-      <mat-card-title class="main-title">{{ job.nom }}</mat-card-title>
-      <mat-card-subtitle class="main-subtitle">
-        <mat-icon>business</mat-icon>
-        <span>{{ job.entreprise.nom }} - {{ job.entreprise.ville }}</span>
-      </mat-card-subtitle>
+      <div class="header-content">
+        <div class="title-section">
+          <h1 class="main-title">{{ job.nom }}</h1>
+          <h2 class="company-name">{{ job.entreprise.nom }}</h2>
+        </div>
+        <div class="company-details">
+          <div class="detail-line">
+            <!-- Icône "location_on" est parfaite, on la garde -->
+            <mat-icon>location_on</mat-icon>
+            <span>{{ job.entreprise.ville }} - {{ job.entreprise.adresse }}</span>
+          </div>
+          <div class="detail-line">
+            <!-- NOUVELLE ICÔNE : "apartment" pour le secteur/industrie -->
+            <mat-icon>apartment</mat-icon>
+            <span>{{ job.entreprise.secteur }}</span>
+          </div>
+        </div>
+      </div>
     </mat-card-header>
 
     <!-- Contenu de la carte -->
     <mat-card-content>
-
       <!-- Section Compétences -->
       <div class="section">
-        <h3 class="section-title">Compétences Requises</h3>
+        <h3 class="section-title">
+          <mat-icon class="section-icon">code</mat-icon> <!-- NOUVELLE ICÔNE -->
+          Compétences Requises
+        </h3>
         <mat-chip-listbox aria-label="Compétences requises">
           <mat-chip *ngFor="let skill of job.requiredSkills" class="skill-chip" disabled>
             {{ skill.name }}
@@ -26,7 +41,10 @@
 
       <!-- Section Description -->
       <div class="section">
-        <h3 class="section-title">Description de l'offre</h3>
+        <h3 class="section-title">
+          <mat-icon class="section-icon">description</mat-icon> <!-- NOUVELLE ICÔNE -->
+          Description de l'offre
+        </h3>
         <div class="description-content" [innerHTML]="job.description | formatDescription"></div>
       </div>
 
@@ -34,11 +52,15 @@
 
       <!-- Section Détails -->
       <div class="section">
-        <h3 class="section-title">Détails</h3>
+        <h3 class="section-title">
+          <mat-icon class="section-icon">info</mat-icon> <!-- NOUVELLE ICÔNE -->
+          Détails
+        </h3>
         <div class="details-section">
           <!-- Statut -->
           <div class="detail-item">
-            <mat-icon class="detail-icon">work_outline</mat-icon>
+            <!-- NOUVELLE ICÔNE : "hourglass_empty" pour "en cours", etc. -->
+            <mat-icon class="detail-icon">hourglass_empty</mat-icon>
             <div class="detail-text">
               <span class="detail-label">Statut</span>
               <span class="detail-value status-chip" [ngClass]="job.status">{{ job.status | titlecase }}</span>
@@ -46,7 +68,8 @@
           </div>
           <!-- Date de candidature -->
           <div class="detail-item">
-            <mat-icon class="detail-icon">event</mat-icon>
+            <!-- NOUVELLE ICÔNE : "send" pour l'envoi de la candidature -->
+            <mat-icon class="detail-icon">send</mat-icon>
             <div class="detail-text">
               <span class="detail-label">Date de candidature</span>
               <span class="detail-value">{{ job.dateCandidature | date:'fullDate':'':'fr-FR' }}</span>
@@ -54,7 +77,8 @@
           </div>
           <!-- Date de lancement -->
           <div class="detail-item" *ngIf="job.dateLancement">
-            <mat-icon class="detail-icon">today</mat-icon>
+            <!-- NOUVELLE ICÔNE : "campaign" pour l'annonce -->
+            <mat-icon class="detail-icon">campaign</mat-icon>
             <div class="detail-text">
               <span class="detail-label">Offre publiée le</span>
               <span class="detail-value">{{ job.dateLancement | date:'fullDate':'':'fr-FR' }}</span>
@@ -62,6 +86,7 @@
           </div>
           <!-- URL -->
           <div class="detail-item" *ngIf="job.urlOffre">
+            <!-- Icône "link" est parfaite, on la garde -->
             <mat-icon class="detail-icon">link</mat-icon>
             <div class="detail-text">
               <span class="detail-label">URL de l'offre</span>
@@ -70,7 +95,6 @@
           </div>
         </div>
       </div>
-
     </mat-card-content>
   </mat-card>
 </div>

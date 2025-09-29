@@ -13,10 +13,61 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
 }
 
-// En-tête principal de la carte
 .card-main-header {
-  padding: 24px;
-  border-bottom: 1px solid #eee;
+  padding: 24px 32px !important;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between; // Sépare le titre des détails
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap; // Permet de passer à la ligne sur les petits écrans
+  gap: 16px;
+}
+
+.title-section {
+  flex-grow: 1; // Prend autant de place que possible
+}
+
+.main-title {
+  font-size: 2rem; // 32px
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+  color: #212121;
+}
+
+.company-name {
+  font-size: 1.25rem; // 20px
+  font-weight: 400;
+  color: #3f51b5; // Couleur primaire
+  margin: 4px 0 0 0;
+}
+
+.company-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: right; // Aligne les détails à droite
+  flex-shrink: 0; // Empêche les détails de se réduire
+}
+
+.detail-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; // Aligne le contenu de la ligne à droite
+  gap: 8px;
+  font-size: 1rem; // 16px
+  color: #616161; // Gris foncé
+
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    color: #757575; // Gris plus clair pour l'icône
+  }
 }
 
 .main-title {
@@ -39,14 +90,25 @@
   padding: 24px;
 }
 
+/* ... vos autres styles ... */
+
+// Style pour les titres de section
 .section-title {
-  font-size: 1.5rem; // 24px
+  font-size: 1.5rem;
   font-weight: 600;
   margin-top: 0;
   margin-bottom: 20px;
   color: #333;
+  display: flex; // Permet d'aligner l'icône et le texte
+  align-items: center;
 }
 
+// Style pour les icônes dans les titres de section
+.section-icon {
+  margin-right: 12px;
+  color: #3f51b5; // Couleur primaire
+  vertical-align: middle;
+}
 // Style pour les puces de compétences
 .skill-chip {
   background-color: #e8eaf6 !important; // Un bleu-gris très clair (thème Indigo)
