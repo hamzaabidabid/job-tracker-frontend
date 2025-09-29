@@ -1,0 +1,125 @@
+
+:host ::ng-deep {
+
+  // Conteneur principal pour centrer le formulaire
+  .form-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 16px;
+  }
+
+  // Style de la carte principale
+  .form-container .mat-mdc-card {
+    max-width: 700px;
+    width: 100%;
+    border-radius: 16px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+    padding: 24px 32px !important;
+  }
+
+  // Style pour le titre de la carte
+  .form-container .mat-mdc-card-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 24px !important;
+    color: #333;
+  }
+
+  // Style pour les champs de formulaire
+  .mat-mdc-form-field {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  // Centrer les boutons du stepper
+  .stepper-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  // Style pour la ligne d'ajout de compétence
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .skill-input {
+    flex-grow: 1;
+  }
+
+  // --- Style personnalisé pour le Stepper ---
+  .custom-stepper {
+
+    // Changer la couleur de l'icône de l'étape sélectionnée/en cours
+    .mat-step-header .mat-step-icon-selected,
+    .mat-step-header .mat-step-icon-state-edit {
+      background-color: #3f51b5;
+    }
+
+    // Placer le label au-dessus du numéro
+    .mat-step-header {
+      flex-direction: column;
+      padding: 16px;
+
+      .mat-step-label {
+        margin-top: 8px;
+        font-size: 14px;
+      }
+    }
+
+    // Changer la couleur du texte du label de l'étape sélectionnée
+    .mat-step-header .mat-step-label-selected {
+      color: #3f51b5;
+      font-weight: 600;
+    }
+  }
+
+  // --- Style pour les boutons d'action ---
+  .main-action-button {
+    background-color: #3f51b5;
+    color: white;
+    padding: 0 24px !important;
+    line-height: 40px !important;
+    border-radius: 20px !important;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #3343a3;
+    }
+  }
+
+  .secondary-action-button {
+    color: #3f51b5;
+    border-color: #3f51b5;
+    padding: 0 24px !important;
+    line-height: 40px !important;
+    border-radius: 20px !important;
+  }
+}
+// ... autres styles ...
+
+.analyze-button-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.skills-title {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.no-skills-message {
+  font-style: italic;
+  color: #888;
+  margin-bottom: 16px;
+  text-align: center;
+  padding: 16px;
+  border: 1px dashed #ccc;
+  border-radius: 8px;
+}

@@ -1,0 +1,46 @@
+:host ::ng-deep {
+  // Style général du conteneur
+  .job-list-container {
+    padding: 24px;
+  }
+
+  // En-tête du tableau avec la couleur de la navbar
+  .mat-mdc-table .mat-mdc-header-row {
+    background-color: #3f51b5;
+  }
+  .mat-mdc-table .mat-mdc-header-cell {
+    color: white;
+    font-weight: 500;
+  }
+  .filter-field {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 16px;
+  }
+  // Centrer les actions
+  .actions-cell {
+    text-align: right;
+  }
+
+  // --- Style pour les "puces" de statut ---
+  .status-chip {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    text-transform: capitalize;
+  }
+
+  // Couleurs spécifiques pour chaque statut
+  .status-chip.EN_COURS { background-color: #1976d2; } // Bleu
+  .status-chip.ACCEPTE { background-color: #388e3c; } // Vert
+  .status-chip.REFUSE { background-color: #d32f2f; }  // Rouge
+  .status-chip.ARCHIVE { background-color: #616161; } // Gris
+}
+.center-title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+

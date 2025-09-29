@@ -1,0 +1,151 @@
+<div class="form-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditMode ? 'Modifier' : 'Ajouter' }} une candidature</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <mat-stepper [linear]="true" #stepper class="custom-stepper">
+        <!-- ================= ÉTAPE 1: Informations sur le poste ================= -->
+        <mat-step [stepControl]="step1FormGroup">
+          <form [formGroup]="step1FormGroup">
+            <ng-template matStepLabel>Informations sur le poste</ng-template>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du poste</mat-label>
+              <input matInput formControlName="nom">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>URL de l'offre</mat-label>
+              <input matInput formControlName="urlOffre">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Source de l'offre</mat-label>
+              <mat-select formControlName="siteRecommandation">
+                <mat-option *ngFor="let source of sources" [value]="source">
+                  {{ source }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Statut</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date de lancement de l'offre</mat-label>
+              <input matInput [matDatepicker]="launchPicker" formControlName="dateLancement">
+              <mat-datepicker-toggle matSuffix [for]="launchPicker"></mat-datepicker-toggle>
+              <mat-datepicker #launchPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Date de candidature</mat-label>
+              <input matInput [matDatepicker]="candidaturePicker" formControlName="dateCandidature">
+              <mat-datepicker-toggle matSuffix [for]="candidaturePicker"></mat-datepicker-toggle>
+              <mat-datepicker #candidaturePicker></mat-datepicker>
+            </mat-form-field>
+
+            <div class="stepper-buttons">
+              <button mat-raised-button class="main-action-button" matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- ================= ÉTAPE 2: Informations sur l'entreprise ================= -->
+        <mat-step [stepControl]="step2FormGroup">
+          <form [formGroup]="step2FormGroup">
+            <ng-template matStepLabel>Informations sur l'entreprise</ng-template>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nom de l'entreprise</mat-label>
+              <input matInput formControlName="nom">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Ville</mat-label>
+              <input matInput formControlName="ville">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Secteur</mat-label>
+              <input matInput formControlName="secteur">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Adresse</mat-label>
+              <input matInput formControlName="adresse">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Email de contact (Facultatif)</mat-label>
+              <input matInput formControlName="email" type="email">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Téléphone (Facultatif)</mat-label>
+              <input matInput formControlName="telephone">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Description de l'entreprise</mat-label>
+              <textarea matInput formControlName="description" rows="3"></textarea>
+            </mat-form-field>
+
+            <div class="stepper-buttons">
+              <button mat-stroked-button class="secondary-action-button" matStepperPrevious>Précédent</button>
+              <button mat-raised-button class="main-action-button" matStepperNext>Suivant</button>
+            </div>
+          </form>
+        </mat-step>
+
+        <!-- ================= ÉTAPE 3: Description et Compétences ================= -->
+        <mat-step [formGroup]="step3FormGroup">
+          <ng-template matStepLabel>Description et Compétences</ng-template>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Description de l'offre</mat-label>
+            <textarea matInput formControlName="description" rows="5"></textarea>
+          </mat-form-field>
+
+          <div class="analyze-button-container">
+            <button mat-stroked-button color="accent" type="button" (click)="analyzeDescription()" [disabled]="isAnalyzing">
+              <mat-icon>psychology</mat-icon>
+              {{ isAnalyzing ? 'Analyse en cours...' : 'Extraire les compétences de la description' }}
+            </button>
+          </div>
+
+
+          <div formArrayName="requiredSkills">
+            <h4 class="skills-title">Compétences Requises</h4>
+            <div *ngIf="requiredSkills.controls.length === 0" class="no-skills-message">
+              Aucune compétence ajoutée. Vous pouvez les ajouter manuellement ou les extraire de la description.
+            </div>
+            <div *ngFor="let skill of requiredSkills.controls; let i=index" [formGroupName]="i" class="skill-row">
+              <mat-form-field appearance="outline" class="skill-input">
+                <mat-label>Compétence {{ i + 1 }}</mat-label>
+                <input matInput formControlName="name">
+              </mat-form-field>
+            </div>
+          </div>
+          <button mat-stroked-button color="primary" type="button" (click)="addSkill()">
+            <mat-icon>add</mat-icon> Ajouter une compétence manuellement
+          </button>
+
+          <div class="stepper-buttons">
+            <button mat-stroked-button class="secondary-action-button" matStepperPrevious>Précédent</button>
+            <button mat-raised-button class="main-action-button" (click)="onSubmit()">
+              {{ isEditMode ? 'Mettre à jour' : 'Enregistrer' }}
+            </button>
+          </div>
+        </mat-step>
+      </mat-stepper>
+
+    </mat-card-content>
+  </mat-card>
+</div>

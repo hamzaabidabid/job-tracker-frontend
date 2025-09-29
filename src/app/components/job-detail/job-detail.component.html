@@ -1,0 +1,76 @@
+<div *ngIf="job$ | async as job" class="job-detail-container">
+  <mat-card class="job-detail-card">
+    <!-- En-tête principal de la carte -->
+    <mat-card-header class="card-main-header">
+      <mat-card-title class="main-title">{{ job.nom }}</mat-card-title>
+      <mat-card-subtitle class="main-subtitle">
+        <mat-icon>business</mat-icon>
+        <span>{{ job.entreprise.nom }} - {{ job.entreprise.ville }}</span>
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <!-- Contenu de la carte -->
+    <mat-card-content>
+
+      <!-- Section Compétences -->
+      <div class="section">
+        <h3 class="section-title">Compétences Requises</h3>
+        <mat-chip-listbox aria-label="Compétences requises">
+          <mat-chip *ngFor="let skill of job.requiredSkills" class="skill-chip" disabled>
+            {{ skill.name }}
+          </mat-chip>
+        </mat-chip-listbox>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Section Description -->
+      <div class="section">
+        <h3 class="section-title">Description de l'offre</h3>
+        <div class="description-content" [innerHTML]="job.description | formatDescription"></div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <!-- Section Détails -->
+      <div class="section">
+        <h3 class="section-title">Détails</h3>
+        <div class="details-section">
+          <!-- Statut -->
+          <div class="detail-item">
+            <mat-icon class="detail-icon">work_outline</mat-icon>
+            <div class="detail-text">
+              <span class="detail-label">Statut</span>
+              <span class="detail-value status-chip" [ngClass]="job.status">{{ job.status | titlecase }}</span>
+            </div>
+          </div>
+          <!-- Date de candidature -->
+          <div class="detail-item">
+            <mat-icon class="detail-icon">event</mat-icon>
+            <div class="detail-text">
+              <span class="detail-label">Date de candidature</span>
+              <span class="detail-value">{{ job.dateCandidature | date:'fullDate':'':'fr-FR' }}</span>
+            </div>
+          </div>
+          <!-- Date de lancement -->
+          <div class="detail-item" *ngIf="job.dateLancement">
+            <mat-icon class="detail-icon">today</mat-icon>
+            <div class="detail-text">
+              <span class="detail-label">Offre publiée le</span>
+              <span class="detail-value">{{ job.dateLancement | date:'fullDate':'':'fr-FR' }}</span>
+            </div>
+          </div>
+          <!-- URL -->
+          <div class="detail-item" *ngIf="job.urlOffre">
+            <mat-icon class="detail-icon">link</mat-icon>
+            <div class="detail-text">
+              <span class="detail-label">URL de l'offre</span>
+              <a class="detail-value link" [href]="job.urlOffre" target="_blank">Voir l'offre originale</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+  </mat-card>
+</div>

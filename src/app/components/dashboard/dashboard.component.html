@@ -1,0 +1,66 @@
+<div class="dashboard-grid">
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Dernières Candidatures</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list *ngIf="latestJobs$ | async as jobs">
+        <mat-list-item *ngFor="let job of jobs">
+          <h3 matListItemTitle>{{ job.nom }}</h3>
+          <p matListItemLine>{{ job.entreprise.nom }} - {{ job.dateCandidature | date:'dd/MM/yy' }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Offres expirant bientôt</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list *ngIf="expiringJobs$ | async as jobs">
+        <mat-list-item *ngFor="let job of jobs">
+          <h3 matListItemTitle>{{ job.nom }}</h3>
+          <p matListItemLine>Expire le: {{ job.dateExpiration | date:'dd/MM/yy' }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Réponses Récentes (< 3 jours)</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list *ngIf="recentResponseJobs$ | async as jobs">
+        <mat-list-item *ngFor="let job of jobs">
+          <h3 matListItemTitle>{{ job.nom }}</h3>
+          <p matListItemLine>Réponse le: {{ job.dateReponse | date:'dd/MM/yy' }}</p>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="dashboard-card chart-card">
+    <mat-card-header>
+      <mat-card-title>Candidatures par Ville</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="jobsByCityData$ | async as data">
+        <ngx-charts-bar-vertical
+          [view]="view"
+          [results]="data"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [gradient]="gradient"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel">
+        </ngx-charts-bar-vertical>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

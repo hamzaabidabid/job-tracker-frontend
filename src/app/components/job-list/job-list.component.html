@@ -1,0 +1,72 @@
+<div class="job-list-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title class="center-title">
+        <h3>Liste de toutes les candidatures</h3>
+      </mat-card-title>
+
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Rechercher par entreprise</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Tech Solutions" #input>
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+          <!-- Colonne 'Poste' -->
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef> Poste </th>
+            <td mat-cell *matCellDef="let job"> {{job.nom}} </td>
+          </ng-container>
+
+          <!-- Colonne 'Entreprise' -->
+          <ng-container matColumnDef="entreprise">
+            <th mat-header-cell *matHeaderCellDef> Entreprise </th>
+            <td mat-cell *matCellDef="let job"> {{job.entreprise.nom}} </td>
+          </ng-container>
+
+          <!-- Colonne 'Date de candidature' -->
+          <ng-container matColumnDef="dateCandidature">
+            <th mat-header-cell *matHeaderCellDef> Date de candidature </th>
+            <td mat-cell *matCellDef="let job"> {{job.dateCandidature | date:'dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <!-- Colonne 'Statut' -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Statut </th>
+            <td mat-cell *matCellDef="let job">
+              <span class="status-chip" [ngClass]="job.status">{{job.status | titlecase}}</span>
+            </td>
+          </ng-container>
+
+          <!-- Colonne 'Actions' -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let job" class="actions-cell">
+              <a mat-icon-button [routerLink]="['/jobs', job.id]" matTooltip="Voir les détails">
+                <mat-icon>visibility</mat-icon>
+              </a>
+              <a mat-icon-button color="primary" [routerLink]="['/edit-job', job.id]" matTooltip="Modifier">
+                <mat-icon>edit</mat-icon>
+              </a>
+              <button mat-icon-button color="warn" (click)="deleteJob(job.id)" matTooltip="Supprimer">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- Définition des lignes d'en-tête et de données -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
+                     showFirstLastButtons
+                     aria-label="Sélectionner la page de candidatures">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>

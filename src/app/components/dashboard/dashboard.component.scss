@@ -1,0 +1,33 @@
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  border-radius: 12px !important; // Bords plus arrondis
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; // Ombre plus douce
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px); // Léger effet de lévitation au survol
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+  }
+
+  mat-card-header {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 16px;
+  }
+}
+
+.chart-card {
+  grid-column: 1 / -1; // Le graphique prend toute la largeur
+}
+
+// Style pour les listes à l'intérieur des cartes
+mat-list-item {
+  .mat-icon {
+    color: #673ab7; // Utiliser la couleur "primary" de votre thème pour les icônes
+  }
+}

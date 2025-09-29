@@ -1,0 +1,95 @@
+// Conteneur pour centrer la carte et donner de l'espace
+.job-detail-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px 16px;
+}
+
+// Style de la carte principale
+.job-detail-card {
+  max-width: 900px;
+  width: 100%;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1) !important;
+}
+
+// En-tête principal de la carte
+.card-main-header {
+  padding: 24px;
+  border-bottom: 1px solid #eee;
+}
+
+.main-title {
+  font-size: 2.25rem; // 36px
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+
+.main-subtitle {
+  font-size: 1.1rem; // 18px
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+// Style général pour chaque section (Compétences, Description, Détails)
+.section {
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 1.5rem; // 24px
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+// Style pour les puces de compétences
+.skill-chip {
+  background-color: #e8eaf6 !important; // Un bleu-gris très clair (thème Indigo)
+  color: #3f51b5 !important; // Couleur primaire
+  font-weight: 500;
+}
+
+// Style pour le contenu de la description
+.description-content {
+  line-height: 1.7;
+  color: #424242;
+
+  strong {
+    display: block;
+    margin-top: 1.2em;
+    margin-bottom: 0.6em;
+    font-size: 1.1em;
+    color: #212121;
+  }
+
+  p {
+    margin-bottom: 0.5em;
+  }
+
+  li {
+    margin-bottom: 0.5em;
+  }
+}
+
+// --- Styles pour la section "Détails" (déjà définis, mais inclus ici pour la complétude) ---
+.details-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.detail-item { display: flex; align-items: center; gap: 16px; }
+.detail-icon { color: #3f51b5; font-size: 28px; height: 28px; width: 28px; }
+.detail-text { display: flex; flex-direction: column; }
+.detail-label { font-size: 14px; color: #757575; margin-bottom: 2px; }
+.detail-value { font-size: 16px; font-weight: 500; color: #212121; }
+.detail-value.link { text-decoration: none; color: #3f51b5; &:hover { text-decoration: underline; } }
+.status-chip { padding: 4px 12px; border-radius: 16px; font-size: 14px; font-weight: 500; display: inline-block; color: white; }
+.status-chip.EN_COURS { background-color: #1976d2; }
+.status-chip.ACCEPTE { background-color: #388e3c; }
+.status-chip.REFUSE { background-color: #d32f2f; }
+.status-chip.ARCHIVE { background-color: #616161; }
