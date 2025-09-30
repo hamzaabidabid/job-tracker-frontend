@@ -18,8 +18,9 @@ import { FormatDescriptionPipe } from '../../pipes/format-description.pipe';
     MatCardModule,
     MatChipsModule,
     FormatDescriptionPipe,
-    MatDividerModule, // <-- AJOUTEZ-LE ICI
-    MatIconModule     // <-- AJOUTEZ-LE ICI
+    MatDividerModule,
+    MatIconModule
+
   ],
   templateUrl: './job-detail.component.html',
   styleUrls: ['./job-detail.component.scss']

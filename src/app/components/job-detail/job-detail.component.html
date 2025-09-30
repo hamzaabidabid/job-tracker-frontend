@@ -9,18 +9,24 @@
         </div>
         <div class="company-details">
           <div class="detail-line">
-            <!-- Icône "location_on" est parfaite, on la garde -->
             <mat-icon>location_on</mat-icon>
             <span>{{ job.entreprise.ville }} - {{ job.entreprise.adresse }}</span>
           </div>
           <div class="detail-line">
-            <!-- NOUVELLE ICÔNE : "apartment" pour le secteur/industrie -->
             <mat-icon>apartment</mat-icon>
             <span>{{ job.entreprise.secteur }}</span>
           </div>
         </div>
       </div>
     </mat-card-header>
+
+    <!-- ======================================================= -->
+    <!-- NOUVEAU : Section pour la description de l'entreprise -->
+    <!-- ======================================================= -->
+    <div class="company-description-section" *ngIf="job.entreprise.description">
+
+      <p>{{ job.entreprise.description }}</p>
+    </div>
 
     <!-- Contenu de la carte -->
     <mat-card-content>

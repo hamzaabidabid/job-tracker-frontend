@@ -155,3 +155,28 @@
 .status-chip.ACCEPTE { background-color: #388e3c; }
 .status-chip.REFUSE { background-color: #d32f2f; }
 .status-chip.ARCHIVE { background-color: #616161; }
+.company-description-section {
+  display: flex;
+  align-items: flex-start; // Aligne l'icône avec le début du texte
+  gap: 16px;
+  padding: 24px 32px; // Même padding que l'en-tête pour l'harmonie
+  background-color: #f9fafb; // Un fond très légèrement différent pour la démarquer
+  border-bottom: 1px solid #e0e0e0;
+
+  mat-icon {
+    color: #757575; // Une icône discrète
+    margin-top: 2px; // Petit ajustement vertical
+  }
+
+  p {
+    margin: 0;
+    font-size: 1rem; // 16px
+    color: #555;
+    line-height: 1.6;
+  }
+}
+
+// Ajustement pour que le contenu de la carte n'ait pas de padding en haut
+mat-card-content {
+  padding-top: 0 !important;
+}
