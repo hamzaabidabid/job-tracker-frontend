@@ -14,4 +14,5 @@ export interface Job {
   status: 'EN_COURS' | 'REFUSE' | 'ACCEPTE' | 'ARCHIVE'; // Ou un type plus large
   entreprise: Entreprise;
   requiredSkills: Skill[];
+  isFavorite: boolean;
 }

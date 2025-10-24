@@ -11,39 +11,44 @@
           <form [formGroup]="step1FormGroup">
             <ng-template matStepLabel>Informations sur le poste</ng-template>
 
+            <!-- Champ de sélection de l'entreprise -->
             <mat-form-field appearance="outline">
-              <mat-label>Nom du poste</mat-label>
-              <input matInput formControlName="nom">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>URL de l'offre</mat-label>
-              <input matInput formControlName="urlOffre">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Source de l'offre</mat-label>
-              <mat-select formControlName="siteRecommandation">
-                <mat-option *ngFor="let source of sources" [value]="source">
-                  {{ source }}
+              <mat-label>Entreprise</mat-label>
+              <mat-select formControlName="existingEntrepriseId">
+                <mat-option [value]="null">-- Créer une nouvelle entreprise --</mat-option>
+                <mat-option *ngFor="let entreprise of allEntreprises$ | async" [value]="entreprise.id">
+                  {{ entreprise.nom }}
                 </mat-option>
               </mat-select>
             </mat-form-field>
 
+            <!-- Reste des champs de l'étape 1 -->
+            <mat-form-field appearance="outline">
+              <mat-label>Nom du poste</mat-label>
+              <input matInput formControlName="nom">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>URL de l'offre</mat-label>
+              <input matInput formControlName="urlOffre">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Source de l'offre</mat-label>
+              <mat-select formControlName="siteRecommandation">
+                <mat-option *ngFor="let source of sources" [value]="source">{{ source }}</mat-option>
+              </mat-select>
+            </mat-form-field>
             <mat-form-field appearance="outline">
               <mat-label>Statut</mat-label>
               <mat-select formControlName="status">
                 <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
               </mat-select>
             </mat-form-field>
-
             <mat-form-field appearance="outline">
               <mat-label>Date de lancement de l'offre</mat-label>
               <input matInput [matDatepicker]="launchPicker" formControlName="dateLancement">
               <mat-datepicker-toggle matSuffix [for]="launchPicker"></mat-datepicker-toggle>
               <mat-datepicker #launchPicker></mat-datepicker>
             </mat-form-field>
-
             <mat-form-field appearance="outline">
               <mat-label>Date de candidature</mat-label>
               <input matInput [matDatepicker]="candidaturePicker" formControlName="dateCandidature">
@@ -59,84 +64,92 @@
 
         <!-- ================= ÉTAPE 2: Informations sur l'entreprise ================= -->
         <mat-step [stepControl]="step2FormGroup">
-          <form [formGroup]="step2FormGroup">
+          <!-- Condition d'affichage -->
+          <div *ngIf="!step1FormGroup.get('existingEntrepriseId')?.value; else existingCompanyInfo">
+            <!-- S'affiche si on CRÉE une nouvelle entreprise -->
+            <form [formGroup]="step2FormGroup">
+              <ng-template matStepLabel>Informations sur l'entreprise</ng-template>
+              <!-- ... tous les champs de l'étape 2 ... -->
+              <mat-form-field appearance="outline">
+                <mat-label>Nom de l'entreprise</mat-label>
+                <input matInput formControlName="nom">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Ville</mat-label>
+                <input matInput formControlName="ville">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Secteur</mat-label>
+                <input matInput formControlName="secteur">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Adresse</mat-label>
+                <input matInput formControlName="adresse">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Email de contact (Facultatif)</mat-label>
+                <input matInput formControlName="email" type="email">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Téléphone (Facultatif)</mat-label>
+                <input matInput formControlName="telephone">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Description de l'entreprise</mat-label>
+                <textarea matInput formControlName="description" rows="3"></textarea>
+              </mat-form-field>
+            </form>
+          </div>
+          <ng-template #existingCompanyInfo>
+            <!-- S'affiche si on a SÉLECTIONNÉ une entreprise existante -->
             <ng-template matStepLabel>Informations sur l'entreprise</ng-template>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Nom de l'entreprise</mat-label>
-              <input matInput formControlName="nom">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Ville</mat-label>
-              <input matInput formControlName="ville">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Secteur</mat-label>
-              <input matInput formControlName="secteur">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Adresse</mat-label>
-              <input matInput formControlName="adresse">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Email de contact (Facultatif)</mat-label>
-              <input matInput formControlName="email" type="email">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Téléphone (Facultatif)</mat-label>
-              <input matInput formControlName="telephone">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Description de l'entreprise</mat-label>
-              <textarea matInput formControlName="description" rows="3"></textarea>
-            </mat-form-field>
-
-            <div class="stepper-buttons">
-              <button mat-stroked-button class="secondary-action-button" matStepperPrevious>Précédent</button>
-              <button mat-raised-button class="main-action-button" matStepperNext>Suivant</button>
+            <div class="company-summary">
+              <h4>Entreprise sélectionnée :</h4>
+              <p><strong>Nom :</strong> {{ step2FormGroup.get('nom')?.value }}</p>
+              <p><strong>Ville :</strong> {{ step2FormGroup.get('ville')?.value }}</p>
+              <p><strong>Secteur :</strong> {{ step2FormGroup.get('secteur')?.value }}</p>
+              <p class="summary-info">Les informations sont pré-remplies. Cliquez sur "Suivant" pour continuer.</p>
             </div>
-          </form>
+          </ng-template>
+
+          <div class="stepper-buttons">
+            <button mat-stroked-button class="secondary-action-button" matStepperPrevious>Précédent</button>
+            <button mat-raised-button class="main-action-button" matStepperNext>Suivant</button>
+          </div>
         </mat-step>
 
         <!-- ================= ÉTAPE 3: Description et Compétences ================= -->
         <mat-step [formGroup]="step3FormGroup">
           <ng-template matStepLabel>Description et Compétences</ng-template>
-
+          <!-- ... reste du code de l'étape 3 (inchangé) ... -->
           <mat-form-field appearance="outline">
             <mat-label>Description de l'offre</mat-label>
             <textarea matInput formControlName="description" rows="5"></textarea>
           </mat-form-field>
-
           <div class="analyze-button-container">
             <button mat-stroked-button color="accent" type="button" (click)="analyzeDescription()" [disabled]="isAnalyzing">
               <mat-icon>psychology</mat-icon>
               {{ isAnalyzing ? 'Analyse en cours...' : 'Extraire les compétences de la description' }}
             </button>
           </div>
-
-
           <div formArrayName="requiredSkills">
             <h4 class="skills-title">Compétences Requises</h4>
             <div *ngIf="requiredSkills.controls.length === 0" class="no-skills-message">
-              Aucune compétence ajoutée. Vous pouvez les ajouter manuellement ou les extraire de la description.
+              Aucune compétence ajoutée.
             </div>
             <div *ngFor="let skill of requiredSkills.controls; let i=index" [formGroupName]="i" class="skill-row">
               <mat-form-field appearance="outline" class="skill-input">
                 <mat-label>Compétence {{ i + 1 }}</mat-label>
                 <input matInput formControlName="name">
               </mat-form-field>
+              <button mat-icon-button color="warn" type="button" (click)="removeSkill(i)">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
             </div>
           </div>
           <button mat-stroked-button color="primary" type="button" (click)="addSkill()">
             <mat-icon>add</mat-icon> Ajouter une compétence manuellement
           </button>
-
           <div class="stepper-buttons">
             <button mat-stroked-button class="secondary-action-button" matStepperPrevious>Précédent</button>
             <button mat-raised-button class="main-action-button" (click)="onSubmit()">
@@ -145,7 +158,6 @@
           </div>
         </mat-step>
       </mat-stepper>
-
     </mat-card-content>
   </mat-card>
 </div>

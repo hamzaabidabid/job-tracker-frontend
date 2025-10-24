@@ -1,66 +1,155 @@
-<div class="dashboard-grid">
-  <mat-card class="dashboard-card">
-    <mat-card-header>
-      <mat-card-title>Dernières Candidatures</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list *ngIf="latestJobs$ | async as jobs">
-        <mat-list-item *ngFor="let job of jobs">
-          <h3 matListItemTitle>{{ job.nom }}</h3>
-          <p matListItemLine>{{ job.entreprise.nom }} - {{ job.dateCandidature | date:'dd/MM/yy' }}</p>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+<!-- Le conteneur principal de la page. Le *ngIf attend que les données statistiques soient chargées. -->
+<div class="dashboard-page" *ngIf="dashboardStats$ | async as stats">
 
-  <mat-card class="dashboard-card">
-    <mat-card-header>
-      <mat-card-title>Offres expirant bientôt</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list *ngIf="expiringJobs$ | async as jobs">
-        <mat-list-item *ngFor="let job of jobs">
-          <h3 matListItemTitle>{{ job.nom }}</h3>
-          <p matListItemLine>Expire le: {{ job.dateExpiration | date:'dd/MM/yy' }}</p>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
+  <!-- ====================================================== -->
+  <!-- Ligne des cartes KPI (Key Performance Indicators)      -->
+  <!-- ====================================================== -->
+  <div class="kpi-grid">
 
-  <mat-card class="dashboard-card">
-    <mat-card-header>
-      <mat-card-title>Réponses Récentes (< 3 jours)</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <mat-list *ngIf="recentResponseJobs$ | async as jobs">
-        <mat-list-item *ngFor="let job of jobs">
-          <h3 matListItemTitle>{{ job.nom }}</h3>
-          <p matListItemLine>Réponse le: {{ job.dateReponse | date:'dd/MM/yy' }}</p>
-        </mat-list-item>
-      </mat-list>
-    </mat-card-content>
-  </mat-card>
-
-  <mat-card class="dashboard-card chart-card">
-    <mat-card-header>
-      <mat-card-title>Candidatures par Ville</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="jobsByCityData$ | async as data">
-        <ngx-charts-bar-vertical
-          [view]="view"
-          [results]="data"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [gradient]="gradient"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel">
-        </ngx-charts-bar-vertical>
+    <!-- Carte 1 : Candidatures Totales -->
+    <mat-card class="kpi-card">
+      <!-- L'en-tête est un enfant direct de mat-card, au même niveau que mat-card-content -->
+      <div class="kpi-header orange">
+        <mat-icon>work_outline</mat-icon>
       </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+      <mat-card-content>
+        <p class="kpi-category">Candidatures Totales</p>
+        <h3 class="kpi-title">{{ stats.totalApplications }}</h3>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="kpi-stats">
+          <mat-icon>update</mat-icon>
+          <a routerLink="/jobs">Voir la liste complète</a>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Carte 2 : Candidatures Refusées -->
+    <mat-card class="kpi-card">
+      <div class="kpi-header red">
+        <mat-icon>thumb_down_off_alt</mat-icon>
+      </div>
+      <mat-card-content>
+        <p class="kpi-category">Candidatures Refusées</p>
+        <h3 class="kpi-title">{{ stats.refusedApplications }}</h3>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="kpi-stats">
+          <mat-icon>update</mat-icon>
+          <a [routerLink]="['/jobs']" [queryParams]="{ status: 'REFUSE' }">Filtrer la liste</a>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Carte 3 : En attente -->
+    <mat-card class="kpi-card">
+      <div class="kpi-header blue">
+        <mat-icon>hourglass_empty</mat-icon>
+      </div>
+      <mat-card-content>
+        <p class="kpi-category">En attente (> 7 jours)</p>
+        <h3 class="kpi-title">{{ stats.pendingApplications }}</h3>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="kpi-stats">
+          <mat-icon>update</mat-icon>
+          <a [routerLink]="['/jobs']" [queryParams]="{ filter: 'pending' }">Filtrer la liste</a>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- Carte 4 : Dernières candidatures (sous forme de KPI) -->
+    <mat-card class="kpi-card">
+      <div class="kpi-header green">
+        <mat-icon>history</mat-icon>
+      </div>
+      <mat-card-content>
+        <mat-list *ngIf="latestJobs$ | async as jobs">
+          <!-- CORRECTION : Chaque élément est un lien cliquable -->
+          <a *ngFor="let job of jobs" [routerLink]="['/jobs', job.id]" class="list-item-link">
+            <mat-list-item>
+              <h3 matListItemTitle class="job-title">{{ job.nom }}</h3>
+              <p matListItemLine>{{ job.entreprise.nom }} - {{ job.dateCandidature | date:'dd/MM/yy' }}</p>
+            </mat-list-item>
+          </a>
+          <p *ngIf="jobs.length === 0" class="empty-list">Aucune candidature récente.</p>
+        </mat-list>
+      </mat-card-content>
+
+
+    </mat-card>
+
+  </div>
+
+  <!-- ====================================================== -->
+  <!-- Ligne des Graphiques et de la liste                    -->
+  <!-- ====================================================== -->
+  <div class="charts-grid">
+
+    <!-- Graphique 1 : Candidatures par Ville -->
+    <mat-card class="chart-card">
+      <div class="chart-header green">
+        <!--
+          CORRECTION ICI : On ajoute un conteneur avec *ngIf.
+          Le graphique ne sera créé que si stats.applicationsByCity existe ET a au moins un élément.
+        -->
+        <div *ngIf="stats.applicationsByCity && stats.applicationsByCity.length > 0; else loadingTemplate" class="chart-wrapper">
+          <ngx-charts-bar-vertical
+            [results]="stats.applicationsByCity"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="false"
+            [gradient]="gradient"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabelCity"
+            [yAxisLabel]="yAxisLabel">
+          </ngx-charts-bar-vertical>
+        </div>
+      </div>
+      <mat-card-content>
+        <h4 class="chart-title">Candidatures par Ville</h4>
+        <p class="chart-category">Répartition géographique</p>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Graphique 2 : Candidatures par Site -->
+    <mat-card class="chart-card">
+      <div class="chart-header orange">
+        <!-- MÊME CORRECTION ICI -->
+        <div *ngIf="stats.applicationsBySite && stats.applicationsBySite.length > 0; else loadingTemplate" class="chart-wrapper">
+          <ngx-charts-bar-vertical
+            [results]="stats.applicationsBySite"
+            [xAxis]="showXAxis"
+            [yAxis]="showYAxis"
+            [legend]="false"
+            [gradient]="gradient"
+            [showXAxisLabel]="showXAxisLabel"
+            [showYAxisLabel]="showYAxisLabel"
+            [xAxisLabel]="xAxisLabelSite"
+            [yAxisLabel]="yAxisLabel">
+          </ngx-charts-bar-vertical>
+        </div>
+      </div>
+      <mat-card-content>
+        <h4 class="chart-title">Candidatures par Site</h4>
+        <p class="chart-category">Source des candidatures</p>
+      </mat-card-content>
+    </mat-card>
+
+
+
+
+  </div>
+
+  <!-- Template à afficher si les données sont vides ou en cours de chargement -->
+  <ng-template #loadingTemplate>
+    <div class="no-data-message">
+      <span>Aucune donnée à afficher</span>
+    </div>
+  </ng-template>
+    <!-- Liste des dernières candidatures -->
+
+
+  </div>
 

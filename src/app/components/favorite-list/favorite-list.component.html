@@ -2,38 +2,25 @@
   <mat-card>
     <mat-card-header>
       <mat-card-title class="center-title">
-        <h3>Liste de toutes les candidatures</h3>
+        <h3>Mes Candidatures Favorites</h3>
       </mat-card-title>
-
     </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Rechercher par entreprise</mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Tech Solutions" #input>
-        <mat-icon matSuffix>search</mat-icon>
-      </mat-form-field>
       <div class="table-container">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-
-          <!-- Colonne 'Poste' -->
+          <!-- Colonnes 'Poste', 'Entreprise', 'Date', 'Statut' (identiques à job-list) -->
           <ng-container matColumnDef="nom">
             <th mat-header-cell *matHeaderCellDef> Poste </th>
             <td mat-cell *matCellDef="let job"> {{job.nom}} </td>
           </ng-container>
-
-          <!-- Colonne 'Entreprise' -->
           <ng-container matColumnDef="entreprise">
             <th mat-header-cell *matHeaderCellDef> Entreprise </th>
             <td mat-cell *matCellDef="let job"> {{job.entreprise.nom}} </td>
           </ng-container>
-
-          <!-- Colonne 'Date de candidature' -->
           <ng-container matColumnDef="dateCandidature">
             <th mat-header-cell *matHeaderCellDef> Date de candidature </th>
             <td mat-cell *matCellDef="let job"> {{job.dateCandidature | date:'dd/MM/yyyy'}} </td>
           </ng-container>
-
-          <!-- Colonne 'Statut' -->
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef> Statut </th>
             <td mat-cell *matCellDef="let job">
@@ -41,17 +28,21 @@
             </td>
           </ng-container>
 
+          <!-- Colonne 'Actions' MODIFIÉE -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef> Actions </th>
             <td mat-cell *matCellDef="let job" class="actions-cell">
+              <button mat-icon-button
+                      (click)="toggleFavorite(job)"
+                      matTooltip="Retirer des favoris">
 
-              <!-- CORRECTION : Le bouton est maintenant syntaxiquement correct -->
-              <button mat-icon-button (click)="toggleFavorite(job)" [matTooltip]="job.isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'">
-                <mat-icon [class.favorite-star]="job.isFavorite">
-                  {{ job.isFavorite ? 'star' : 'star_border' }}
-                </mat-icon>
+                <!--
+                  On ajoute la classe 'favorite-star' directement ici.
+                  Pas besoin de condition, car tous les jobs sont des favoris.
+                -->
+                <mat-icon class="favorite-star">star</mat-icon>
+
               </button>
-
               <a mat-icon-button [routerLink]="['/jobs', job.id]" matTooltip="Voir les détails">
                 <mat-icon>visibility</mat-icon>
               </a>
@@ -64,16 +55,11 @@
             </td>
           </ng-container>
 
-          <!-- Définition des lignes d'en-tête et de données -->
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
         </table>
       </div>
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"
-                     showFirstLastButtons
-                     aria-label="Sélectionner la page de candidatures">
-      </mat-paginator>
+      <p *ngIf="dataSource.data.length === 0" class="empty-list">Vous n'avez aucune candidature en favori.</p>
     </mat-card-content>
   </mat-card>
 </div>

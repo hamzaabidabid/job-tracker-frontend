@@ -1,33 +1,134 @@
-
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 20px;
+:host {
+  display: block;
 }
 
-.dashboard-card {
-  border-radius: 12px !important; // Bords plus arrondis
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important; // Ombre plus douce
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+.dashboard-page {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
 
-  &:hover {
-    transform: translateY(-5px); // Léger effet de lévitation au survol
-    box-shadow: 0 8px 20px rgba(0,0,0,0.12) !important;
+// ======================================================
+// Cartes KPI (Aucun changement ici, mais inclus pour être complet)
+// ======================================================
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+}
+
+.kpi-card {
+  overflow: visible !important;
+  padding: 0 !important;
+
+  .kpi-header {
+    margin: -20px 15px 0;
+    border-radius: 6px;
+    padding: 15px;
+    color: white;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,0,0,.4);
+
+    &.orange { background: linear-gradient(60deg, #ffa726, #fb8c00); }
+    &.green  { background: linear-gradient(60deg, #66bb6a, #43a047); }
+    &.red    { background: linear-gradient(60deg, #ef5350, #e53935); }
+    &.blue   { background: linear-gradient(60deg, #26c6da, #00acc1); }
+
+    mat-icon { font-size: 36px; width: 36px; height: 36px; }
   }
 
-  mat-card-header {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 16px;
+  mat-card-content {
+    padding: 15px 20px 0;
+    text-align: right;
+    .kpi-category { color: #999; margin: 0; font-size: 14px; }
+    .kpi-title { font-size: 1.8rem; font-weight: 300; margin: 5px 0; color: #3C4858; }
   }
+
+  mat-card-actions {
+    margin: 15px 20px 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    .kpi-stats {
+      color: #999; display: flex; align-items: center; gap: 5px; font-size: 12px;
+      mat-icon { font-size: 16px; width: 16px; height: 16px; }
+      a { color: #999; text-decoration: none; &:hover { text-decoration: underline; } }
+    }
+  }
+}
+
+// ======================================================
+// Cartes des Graphiques (LA CORRECTION EST ICI)
+// ======================================================
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
 }
 
 .chart-card {
-  grid-column: 1 / -1; // Le graphique prend toute la largeur
+  overflow: visible !important;
+  padding: 0 !important;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,.14) !important;
+  border-radius: 6px !important;
+
+  // On utilise Flexbox pour la disposition verticale
+  display: flex;
+  flex-direction: column;
+
+  .chart-header {
+    margin: -20px 15px 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,0,0,.4);
+
+    // --- CORRECTION DÉFINITIVE ---
+    // 1. On donne une hauteur minimale pour "casser" le paradoxe
+    min-height: 250px;
+    // 2. On utilise flex pour que le graphique à l'intérieur puisse s'étirer
+    display: flex;
+    // -----------------------------
+
+    &.green { background: linear-gradient(60deg, #66bb6a, #43a047); }
+    &.orange { background: linear-gradient(60deg, #ffa726, #fb8c00); }
+
+    // Style pour le graphique ngx-charts
+    ::ng-deep .ngx-charts {
+      // Le graphique doit remplir son parent (l'en-tête)
+      flex-grow: 1;
+      height: 100%;
+      width: 100%;
+
+      .grid-line { stroke: rgba(255,255,255,0.2) !important; }
+      text { fill: white !important; }
+    }
+  }
+
+  mat-card-content {
+    padding: 15px 20px 10px;
+    .chart-title { font-size: 1.2rem; font-weight: 400; margin: 0; color: #3C4858; }
+    .chart-category { color: #999; margin-top: 5px; font-size: 14px; }
+  }
 }
 
-// Style pour les listes à l'intérieur des cartes
-mat-list-item {
-  .mat-icon {
-    color: #673ab7; // Utiliser la couleur "primary" de votre thème pour les icônes
-  }
+// ======================================================
+// Carte de la liste (Aucun changement)
+// ======================================================
+.list-card {
+  padding: 24px !important;
+  mat-card-title { font-size: 1.2rem; font-weight: 400; color: #3C4858; }
+  .job-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+// Style pour le message "Aucune donnée"
+.no-data-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
 }

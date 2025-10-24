@@ -5,37 +5,38 @@ import { MatListModule } from '@angular/material/list';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Observable } from 'rxjs';
 import { Job } from '../../models/job';
-import { JobService } from '../../services/job.service';
+import { JobService, DashboardStats } from '../../services/job.service';
+import { MatIconModule } from '@angular/material/icon';
+import {RouterLink} from '@angular/router'; // Importer MatIconModule
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatListModule, NgxChartsModule],
+  // AJOUTER MatIconModule
+  imports: [CommonModule, MatCardModule, MatListModule, NgxChartsModule, MatIconModule ,RouterLink ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
   latestJobs$!: Observable<Job[]>;
-  expiringJobs$!: Observable<Job[]>;
-  recentResponseJobs$!: Observable<Job[]>;
-  jobsByCityData$!: Observable<any[]>;
+  dashboardStats$!: Observable<DashboardStats>;
 
-  view: [number, number] = [700, 400];
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  showXAxisLabel = true;
-  xAxisLabel = 'Ville';
-  showYAxisLabel = true;
-  yAxisLabel = 'Nombre de candidatures';
+  // Options pour les graphiques
+
+  gradient: boolean = false;
+  showLegend: boolean = true;
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  showXAxisLabel: boolean = true;
+  showYAxisLabel: boolean = true;
+  xAxisLabelCity: string = 'Ville';
+  xAxisLabelSite: string = 'Site de Recommandation';
+  yAxisLabel: string = 'Nombre de candidatures';
 
   constructor(private jobService: JobService) {}
 
   ngOnInit(): void {
     this.latestJobs$ = this.jobService.getLatestJobs();
-    this.expiringJobs$ = this.jobService.getExpiringJobs();
-    this.recentResponseJobs$ = this.jobService.getJobsWithRecentResponse();
-    this.jobsByCityData$ = this.jobService.getJobsByCityStats();
+    this.dashboardStats$ = this.jobService.getDashboardStats();
   }
 }

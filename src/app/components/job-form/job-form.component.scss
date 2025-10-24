@@ -123,3 +123,20 @@
   border: 1px dashed #ccc;
   border-radius: 8px;
 }
+.company-summary {
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+
+  h4 {
+    margin-top: 0;
+  }
+
+  .summary-info {
+    margin-top: 16px;
+    font-style: italic;
+    color: #666;
+  }
+}
+
