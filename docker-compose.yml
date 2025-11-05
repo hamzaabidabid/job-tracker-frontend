@@ -1,0 +1,16 @@
+services:
+  frontend:
+    build: .
+    container_name: frontend-app
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      - job-tracker-network
+    # --- LA CORRECTION EST ICI ---
+    # On retire complètement la section 'depends_on' car le service 'backend'
+    # n'est pas défini dans ce fichier. La connexion se fera via le réseau partagé.
+
+networks:
+  job-tracker-network:
+    external: true

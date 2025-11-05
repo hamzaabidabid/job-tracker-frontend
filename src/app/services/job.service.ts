@@ -16,9 +16,10 @@ export interface DashboardStats {
   providedIn: 'root'
 })
 export class JobService {
-  private apiUrl = 'http://localhost:8082/api/jobs';
-  private apiUrl2 = 'http://localhost:8082/api';// URL de votre API Spring Boot
-
+  // private apiUrl = 'http://localhost:8082/api/jobs';
+  // private apiUrl2 = 'http://localhost:8082/api';
+  private apiUrl = '/api/jobs';
+  private apiUrl2 = '/api';
   private favoriteJobIds = new BehaviorSubject<Set<number>>(new Set());
 
   // Un Observable public que les composants pourront écouter.
