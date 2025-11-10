@@ -89,7 +89,7 @@ pipeline {
                             echo "--- Applying Kubernetes manifests ---"
                             # Applique la configuration de base (Service, Ingress, etc.)
                             kubectl apply -f k8s/frontend.yml
-                            kubectl apply -f k8s/ingress.yml --ignore-not-found=true
+                            kubectl apply -f k8s/ingress.yml
 
                             echo "--- Updating deployment image ---"
                             # Met à jour l'image du déploiement avec le nouveau tag
